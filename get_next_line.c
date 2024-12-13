@@ -6,16 +6,26 @@
 /*   By: saskin <saskin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:24:40 by saskin            #+#    #+#             */
-/*   Updated: 2024/12/12 21:20:48 by saskin           ###   ########.fr       */
+/*   Updated: 2024/12/13 17:52:34 by saskin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
 char *read_line(int fd, char *str, char *remainder)
 {
     int i = 0;
     char *newstr;
+    char *new;
     ssize_t bytes_read;
     bytes_read = 1;
 if(!remainder)
@@ -30,19 +40,17 @@ while(bytes_read != 0)
 }
 if(bytes_read == 0)
     break;
-
 newstr = ft_strjoin(remainder, str);
-
+if(ft_strchr(remainder, '\n'))
+    return remainder;
 if((ft_strchr(str, '\n')))
 {
     remainder = ft_strchr(str, '\n') + 1;
-    break;
+    new = ft_substr(newstr, 0, ft_strlen(newstr) - ft_strlen(remainder));
 }
 }
-return newstr;
+return new;
 }
-
-
 char *get_next_line(int fd)
 {
     char *str;
@@ -59,73 +67,6 @@ char *get_next_line(int fd)
 }
 int main()
 {
-    int fd = open("sila.txt",O_RDWR | O_CREAT, 0644);
-    write(fd,"sila \n askin \n 42 istanbul", 26);
-    get_next_line(fd);
+    int fd = open("sila.txt", O_RDONLY);
+    printf("%s", get_next_line(fd));
 }
-// #include "get_next_line.h"
-
-// char *read_line(int fd, char *str, char *remainder)
-// {
-//     ssize_t bytes_read;
-//     char *newstr;
-
-//     // Eğer kalan veri varsa (remainder), onu yeni bir string olarak başlatıyoruz
-//     if (remainder)
-//     {
-//         newstr = ft_strdup(remainder);
-//         free(remainder);
-//         remainder = NULL; // remainder'ı sıfırlıyoruz
-//     }
-//     else
-//     {
-//         newstr = malloc(1); // Başlangıçta boş bir string ayırıyoruz
-//         newstr[0] = '\0';
-//     }
-
-//     while (1)
-//     {
-//         bytes_read = read(fd, str, BUFFER_SIZE);
-//         if (bytes_read == -1) // Eğer okuma başarısızsa
-//         {
-//             free(str);
-//             free(newstr);
-//             return NULL;
-//         }
-
-//         if (bytes_read == 0) // Eğer dosyada daha veri kalmadıysa
-//             break;
-
-//         str[bytes_read] = '\0'; // Okunan verinin sonuna null terminator ekliyoruz
-
-//         // Okunan veriyi newstr'e ekliyoruz
-//         newstr = ft_strjoin(newstr, str);
-
-//         // Eğer '\n' karakteri bulursak, satır tamamlanmış demektir
-//         if (ft_strchr(str, '\n'))
-//         {
-//             remainder = ft_strdup(ft_strchr(str, '\n') + 1); // '\n' sonrası kısmı remainder'a kaydediyoruz
-//             break;
-//         }
-//     }
-
-//     free(str); // str'yi serbest bırakıyoruz
-//     return newstr;
-// }
-
-// char *get_next_line(int fd)
-// {
-//     char *str;
-//     static char *remainder;
-//     char *newstr;
-
-//     if (fd <= 0 || BUFFER_SIZE <= 0) // Dosya geçerli değilse
-//         return NULL;
-
-//     str = malloc(BUFFER_SIZE + 1); // Okuma için bir buffer ayırıyoruz
-//     if (!str)
-//         return NULL;
-
-//     newstr = read_line(fd, str, remainder); // Satırı okuyup döndür
-//     return newstr;
-// }

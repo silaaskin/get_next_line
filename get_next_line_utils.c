@@ -6,7 +6,7 @@
 /*   By: saskin <saskin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:24:37 by saskin            #+#    #+#             */
-/*   Updated: 2024/12/12 20:13:39 by saskin           ###   ########.fr       */
+/*   Updated: 2024/12/13 17:48:49 by saskin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,6 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)(s + i));
 	return (NULL);
 }
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
 char	*ft_strdup(const char *s1)
 {
 	int		i;
@@ -83,4 +74,36 @@ char	*ft_strdup(const char *s1)
 	}
 	newsrc[i] = '\0';
 	return (newsrc);
+}
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*p;
+
+	if (s == NULL)
+		return (NULL);
+	if ((ft_strlen(s) - start) < len)
+		len = ft_strlen(s) - start;
+	if (start >= ft_strlen(s))
+		return (ft_strdup(""));
+	p = (char *)malloc((len + 1) * sizeof(char));
+	if (!p)
+		return (NULL);
+	ft_strlcpy(p, s + start, len + 1);
+	return (p);
+}
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	size_t	i;
+
+	i = 0;
+	if (dstsize != 0)
+	{
+		while (src[i] && i < dstsize - 1)
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
+	}
+	return (ft_strlen(src));
 }
