@@ -6,18 +6,18 @@
 /*   By: saskin <saskin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:24:37 by saskin            #+#    #+#             */
-/*   Updated: 2024/12/13 17:48:49 by saskin           ###   ########.fr       */
+/*   Updated: 2024/12/16 13:41:24 by saskin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-char	*ft_strjoin(char const *s1, char const *s2)
+char *ft_strjoin(char const *s1, char const *s2)
 {
-	int		s1len;
-	int		s2len;
-	char	*newsrc;
-	int		i;
-	int		j;
+	int s1len;
+	int s2len;
+	char *newsrc;
+	int i;
+	int j;
 
 	i = 0;
 	j = 0;
@@ -39,9 +39,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	newsrc[i + j] = '\0';
 	return (newsrc);
 }
-char	*ft_strchr(const char *s, int c)
+char *ft_strchr(const char *s, int c)
 {
-	unsigned int	i;
+	unsigned int i;
 
 	i = 0;
 	while (s[i])
@@ -54,11 +54,11 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)(s + i));
 	return (NULL);
 }
-char	*ft_strdup(const char *s1)
+char *ft_strdup(const char *s1)
 {
-	int		i;
-	char	*newsrc;
-	int		l;
+	int i;
+	char *newsrc;
+	int l;
 
 	i = 0;
 	l = 0;
@@ -75,9 +75,9 @@ char	*ft_strdup(const char *s1)
 	newsrc[i] = '\0';
 	return (newsrc);
 }
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char *ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*p;
+	char *p;
 
 	if (s == NULL)
 		return (NULL);
@@ -91,9 +91,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	ft_strlcpy(p, s + start, len + 1);
 	return (p);
 }
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+size_t ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	size_t	i;
+	size_t i;
 
 	i = 0;
 	if (dstsize != 0)
