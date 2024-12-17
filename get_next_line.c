@@ -8,65 +8,81 @@ size_t ft_strlen(const char *s)
     return (i);
 }
 
-char *read_line(int fd, char *str, char *remainder)
+char* read_line(int fd, char *remainder)
 {
-    ssize_t bytes_read;
-    char *newstr;
-    char *new;
+    int bytes_read;
+    char *buffer;
+    char *temp;
 
     if (!remainder)
-        remainder = ft_strdup("");
-    newstr = NULL;
-    bytes_read = 1;
-    while (bytes_read > 0)
     {
-        bytes_read = read(fd, str, BUFFER_SIZE);
+        remainder = malloc(1 * sizeof(char));
+        if (!remainder)
+            return (NULL);
+        remainder[0] = '\0';
+    }
+    buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+    if (!buffer)
+        return (NULL);
+    bytes_read = 1;
+    while (!ft_strchr(remainder, '\n') && bytes_read > 0)
+    {
+        bytes_read = read(fd, buffer, BUFFER_SIZE);
         if (bytes_read == -1)
         {
-            free(str);
+            free(remainder);
+            free(buffer);
             return (NULL);
         }
-        str[bytes_read] = '\0';
-
-        newstr = ft_strjoin(remainder, str);
-        free(remainder);
-        remainder = newstr;
-
-        if (ft_strchr(remainder, '\n'))
-        {
-
-            new = ft_substr(remainder, 0, remainder - ft_strchr(remainder, '\n'));
-            remainder = ft_strdup(ft_strchr(remainder, '\n'));
-            free(newstr);
-            return (new);
-        }
+        buffer[bytes_read] = '\0';
+        remainder = ft_strjoin(remainder, buffer);
     }
-
-    if (bytes_read == 0 && ft_strlen(remainder) > 0)
-    {
-        new = ft_strdup(remainder);
-        free(remainder);
-        return (new);
-    }
-
-    free(remainder);
-    return (NULL);
+    free(buffer);
+    return (remainder);
 }
+
+char	*get_new_line(char *buffer)
+{
+	char	*line;
+	int		i;
+	int		new_line;
+
+	new_line = found_new_line(buffer);
+	i = 0;
+	if (!buffer[i])
+		return (NULL);
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	line = malloc(sizeof(char) * (i + 1 + new_line));
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+	{
+		line[i] = buffer[i];
+		i++;
+	}
+	if (buffer[i] == '\n')
+		line[i++] = '\n';
+	line[i] = '\0';
+	return (line);
+}
+
 
 char *get_next_line(int fd)
 {
     static char *remainder;
-    char *str;
-    char *newstr;
+    char *new;
+    char *line;
 
     if (fd < 0 || BUFFER_SIZE <= 0)
+    {
         return (NULL);
-
-    str = malloc(BUFFER_SIZE + 1);
-    if (!str)
+    }
+    remainder = read_line(fd, remainder);
+    if (remainder == NULL)
         return (NULL);
-
-    newstr = read_line(fd, str, remainder);
-    free(str); //
-    return (newstr);
+    line = get_new_line(remainder);
+    remainder = get_new_buffer(remainder);
+    return line;
 }
+
+
