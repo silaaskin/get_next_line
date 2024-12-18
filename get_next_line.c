@@ -8,22 +8,13 @@ size_t ft_strlen(const char *s)
     return (i);
 }
 
-char *read_line(int fd, char *remainder)
+char *read_line(int fd, char *buffer, char *remainder)
 {
     int bytes_read;
-    char *buffer;
     char *temp;
 
     if (!remainder)
-    {
-        remainder = malloc(1 * sizeof(char));
-        if (!remainder)
-            return (NULL);
-        remainder[0] = '\0';
-    }
-    buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-    if (!buffer)
-        return (NULL);
+        remainder = ft_strdup("");
     bytes_read = 1;
     while (!ft_strchr(remainder, '\n') && bytes_read > 0)
     {
@@ -73,12 +64,16 @@ char *get_next_line(int fd)
     static char *remainder;
     char *new;
     char *line;
+    char *buffer;
 
     if (fd < 0 || BUFFER_SIZE <= 0)
     {
         return (NULL);
     }
-    remainder = read_line(fd, remainder);
+    buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+    if (!buffer)
+        return (NULL);
+    remainder = read_line(fd,buffer, remainder);
     if (remainder == NULL)
         return (NULL);
     line = get_new_line(remainder);
