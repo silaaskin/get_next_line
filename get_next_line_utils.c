@@ -61,35 +61,43 @@ char *ft_strdup(const char *s1)
 	newsrc[i] = '\0';
 	return (newsrc);
 }
-char *ft_substr(char const *s, unsigned int start, size_t len)
+char *get_new_buffer(char *buffer)
 {
-	char *p;
+	char *updated_buffer;
+	int i;
+	int j;
 
-	if (s == NULL)
+	j = 0;
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (!buffer[i])
+	{
+		free(buffer);
 		return (NULL);
-	if ((ft_strlen(s) - start) < len)
-		len = ft_strlen(s) - start;
-	if (start >= ft_strlen(s))
-		return (ft_strdup(""));
-	p = (char *)malloc((len + 1) * sizeof(char));
-	if (!p)
+	}
+	i++;
+	updated_buffer = malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
+	if (!updated_buffer)
 		return (NULL);
-	ft_strlcpy(p, s + start, len + 1);
-	return (p);
+	while (buffer[i])
+		updated_buffer[j++] = buffer[i++];
+	updated_buffer[j] = '\0';
+	free(buffer);
+	return (updated_buffer);
 }
-size_t ft_strlcpy(char *dst, const char *src, size_t dstsize)
+int found_new_line(char *buffer)
 {
-	size_t i;
+	int i;
 
 	i = 0;
-	if (dstsize != 0)
+	if (!buffer)
+		return (0);
+	while (buffer[i] != '\0')
 	{
-		while (src[i] && i < dstsize - 1)
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
+		if (buffer[i] == '\n')
+			return (1);
+		i++;
 	}
-	return (ft_strlen(src));
+	return (0);
 }

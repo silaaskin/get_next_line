@@ -8,7 +8,7 @@ size_t ft_strlen(const char *s)
     return (i);
 }
 
-char* read_line(int fd, char *remainder)
+char *read_line(int fd, char *remainder)
 {
     int bytes_read;
     char *buffer;
@@ -35,37 +35,38 @@ char* read_line(int fd, char *remainder)
             return (NULL);
         }
         buffer[bytes_read] = '\0';
-        remainder = ft_strjoin(remainder, buffer);
+        temp = ft_strjoin(remainder, buffer);
+        free(remainder); // Eski remainder'ı serbest bırakıyoruz
+        remainder = temp;
     }
     free(buffer);
     return (remainder);
 }
 
-char	*get_new_line(char *buffer)
+char *get_new_line(char *buffer)
 {
-	char	*line;
-	int		i;
-	int		new_line;
+    char *line;
+    int i;
+    int new_line;
 
-	new_line = found_new_line(buffer);
-	i = 0;
-	if (!buffer[i])
-		return (NULL);
-	while (buffer[i] && buffer[i] != '\n')
-		i++;
-	line = malloc(sizeof(char) * (i + 1 + new_line));
-	i = 0;
-	while (buffer[i] && buffer[i] != '\n')
-	{
-		line[i] = buffer[i];
-		i++;
-	}
-	if (buffer[i] == '\n')
-		line[i++] = '\n';
-	line[i] = '\0';
-	return (line);
+    new_line = found_new_line(buffer);
+    i = 0;
+    if (!buffer[i])
+        return (NULL);
+    while (buffer[i] && buffer[i] != '\n')
+        i++;
+    line = malloc(sizeof(char) * (i + 1 + new_line));
+    i = 0;
+    while (buffer[i] && buffer[i] != '\n')
+    {
+        line[i] = buffer[i];
+        i++;
+    }
+    if (buffer[i] == '\n')
+        line[i++] = '\n';
+    line[i] = '\0';
+    return (line);
 }
-
 
 char *get_next_line(int fd)
 {
@@ -82,7 +83,5 @@ char *get_next_line(int fd)
         return (NULL);
     line = get_new_line(remainder);
     remainder = get_new_buffer(remainder);
-    return line;
+    return (line);
 }
-
-
