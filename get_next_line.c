@@ -36,7 +36,7 @@ char *read_line(int fd, char *remainder)
         }
         buffer[bytes_read] = '\0';
         temp = ft_strjoin(remainder, buffer);
-        free(remainder); // Eski remainder'ı serbest bırakıyoruz
+        free(remainder);
         remainder = temp;
     }
     free(buffer);

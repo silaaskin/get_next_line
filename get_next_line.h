@@ -6,7 +6,7 @@
 /*   By: saskin <saskin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 14:54:44 by saskin            #+#    #+#             */
-/*   Updated: 2024/12/18 20:02:01 by saskin           ###   ########.fr       */
+/*   Updated: 2024/12/18 20:04:46 by saskin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int found_new_line(char *buffer);
 char *ft_strjoin(char *s1, char *s2);
 char *ft_strchr(const char *s, int c);
 char *ft_strdup(const char *s1);
-char *ft_substr(char const *s, unsigned int start, size_t len);
-size_t ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t ft_strlen(const char *s);
 char *read_line(int fd, char *remainder);
 char *get_new_line(char *buffer);
